@@ -11,6 +11,7 @@ int main()
 
     for (int y = 0; y < image_height; ++y)
     {
+        std::clog << "\rScanlines remaining: " << (image_height - y) << ' ' << std::flush;
         for (int x = 0; x < image_width; ++x) 
         {
             double r = double(x) / (image_width-1);
