@@ -7,8 +7,7 @@
 #include <type_traits>
 
 
-int main()
-{
+int main() {
     // Note: An image's aspect ratio can be found by the ratio of its height and width (width/height)
     auto aspect_ratio = 16.0/9.0;
     int image_width = 400;
@@ -31,10 +30,9 @@ int main()
     // Note: Distance between two adjacent pixels is called pixel spacing and the standard is square pixels
     auto camera_center = point3(0,0,0);
 
-    // Calcuate the
+    // Helps us calcuate the vectors across horizontal axis and down the vertical axis
     auto viewport_u = vec3(viewport_width, 0, 0);
     auto viewport_v = vec3(0, -viewport_height, 0);
-
 
     auto pixel_delta_u = viewport_u / image_width;
     auto pixel_delta_v = viewport_v / image_height;
@@ -46,11 +44,9 @@ int main()
 
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
-    for (int y = 0; y < image_height; ++y)
-    {
+    for (int y = 0; y < image_height; ++y) {
         std::clog << "\rScanlines remaining: " << (image_height - y) << ' ' << std::flush;
-        for (int x = 0; x < image_width; ++x) 
-        {
+        for (int x = 0; x < image_width; ++x) {
             auto pixel_center = pixel00_loc + (x * pixel_delta_u) + (y * pixel_delta_v);
             auto ray_direction = pixel_center - camera_center;
             ray r(camera_center, ray_direction);
