@@ -34,6 +34,8 @@ int main() {
     auto viewport_u = vec3(viewport_width, 0, 0);
     auto viewport_v = vec3(0, -viewport_height, 0);
 
+    // Helps us calcuate where to put the pixel values by using the delta vectors as our guide
+    // This way, our viewport and pixel grid are evenly divded into identical regions
     auto pixel_delta_u = viewport_u / image_width;
     auto pixel_delta_v = viewport_v / image_height;
 
