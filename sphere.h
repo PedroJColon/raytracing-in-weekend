@@ -18,7 +18,7 @@ public:
         if (discriminant < 0) return 0;
         auto sqrtd = sqrt(discriminant);
 
-        // auto root = (-half_b - sqrtd) / a;
+        auto root = (-half_b - sqrtd) / a;
         if (root <= ray_tmin || ray_tmax <= root) {
             root = (-half_b + sqrtd) / a;
             if (root <= ray_tmin || ray_tmax <= root) {
