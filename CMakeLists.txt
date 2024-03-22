@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 
 project(raytracing VERSION 0.1)
 
-set(cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1)
+set(header_dir "${PROJECT_HEADER_DIR}/header/")
 
-add_executable(raytracing main.cpp vec3.h color.h ray.h commonheader.h interval.h)
+file (GLOB header_files "${header_dir}/*.h")
+
+add_executable(raytracing main.cpp ${header_files})

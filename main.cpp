@@ -1,10 +1,9 @@
-#include "commonheader.h"
+#include "src/commonheader.h"
 
-#include "color.h"
-#include "hittable.h"
-#include "hittable_list.h"
-#include "sphere.h"
-#include "vec3.h"
+#include "src/color.h"
+#include "src/hittable.h"
+#include "src/hittable_list.h"
+#include "src/sphere.h"
 
 #include <iostream>
 
