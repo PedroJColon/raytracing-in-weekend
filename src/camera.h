@@ -48,6 +48,7 @@ class camera {
         // Won't throw off our desired aspect ratio (that we set already)
         image_height = static_cast<int>(image_width/aspect_ratio);
         image_height = (image_height < 1) ? 1 : image_height;
+        
         center = point3(0,0,0);
 
         // Camera
