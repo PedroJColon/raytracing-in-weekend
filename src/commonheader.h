@@ -2,6 +2,7 @@
 #define COMMONHEADER_H
 
 #include <cmath>
+#include <cstdlib>
 #include <limits>
 #include <memory>
 
@@ -22,6 +23,15 @@ inline double degrees_to_radians(double degrees) {
     return degrees * pi / 180.0;
 }
 
+inline double random_double() {
+    // TODO: Write down comment
+    return rand() / (RAND_MAX + 1.0);
+}
+
+inline double random_double(double min, double max) {
+    // TODO: Write down coment
+    return min + (max-min)*random_double();
+}
 
 // common header files
 
