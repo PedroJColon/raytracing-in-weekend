@@ -1,7 +1,7 @@
 #ifndef VEC3_H
 #define VEC3_H
 
-#include <cmath>
+#include "commonheader.h"
 #include <iostream>
 #include <ostream>
 
@@ -47,6 +47,14 @@ class vec3 {
         double length_squared()  const {
             return (point[0] * point[0]) + (point[1] * point[1]) + (point[2] * point[2]);
         }     
+
+        static vec3 random() {
+            return vec3(random_double(), random_double(), random_double());
+        }
+
+        static vec3 random(double min, double max) {
+            return vec3(random_double(min, max), random_double(min,max), random_double(min,max));
+        }
 };
 
 // alias for vector 3,  focused on geometric shapes
@@ -96,6 +104,14 @@ inline vec3 cross(const vec3 &u, const vec3 &v) {
 
 inline vec3 unit_vector(vec3 v) {
     return v / v.length();
+}
+
+inline vec3 random_in_unit_sphere() {
+    while (true) {
+        auto p = vec3::random(-1,1);
+        if (p.length_squared() < 1)
+            return p;
+    }
 }
 
 #endif
