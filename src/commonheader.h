@@ -2,10 +2,10 @@
 #define COMMONHEADER_H
 
 #include <cmath>
+#include <cstdlib>
 #include <limits>
 #include <memory>
 #include <random>
-#include <cstdlib>
 
 // usings
 
@@ -24,7 +24,6 @@ inline double degrees_to_radians(double degrees) {
   return degrees * pi / 180.0;
 }
 
-
 /// C++ implementation
 // // return a real num between 0-1
 // inline double random_double() {
@@ -42,12 +41,12 @@ inline double degrees_to_radians(double degrees) {
 /// C-like implementation
 inline double random_double() {
   // returns a real num between 0-1
-  return rand()/(RAND_MAX + 1.0);
+  return rand() / (RAND_MAX + 1.0);
 }
 
 inline double random_double(double min, double max) {
-  // returns a real num between the min and max 
-  return min + (max-min)*random_double();
+  // returns a real num between the min and max
+  return min + (max - min) * random_double();
 }
 
 // common header files
