@@ -14,9 +14,10 @@ class camera {
 public:
   // Note: An image's aspect ratio can be found by the ratio of its height and
   // width (width/height)
-  double aspect_ratio = 1.0; // Ratio of image width over height
-  int image_width = 100;     // Rendered image width in pixel count
-  int samples_per_pixel = 10;
+  double aspect_ratio = 1.0;  // Ratio of image width over height
+  int image_width = 100;      // Rendered image width in pixel count
+  int samples_per_pixel = 10; // Count of random samples for each pixel
+  int max_depth = 10;         // Maximum number of ray bounces into scene
 
   void render(const hittable &world) {
     init();
@@ -30,7 +31,7 @@ public:
         color pixel_color(0, 0, 0);
         for (int sample = 0; sample < samples_per_pixel; ++sample) {
           ray r = get_ray(x, y);
-          pixel_color += ray_color(r, world);
+          pixel_color += ray_color(r, max_depth, world);
         }
         write_color(std::cout, pixel_color, samples_per_pixel);
       }
@@ -87,11 +88,16 @@ private:
     pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
   }
 
-  color ray_color(const ray &r, const hittable &world) const {
+  color ray_color(const ray &r, int depth, const hittable &world) const {
     hit_record rec;
+
+    // If we're exceeded ray bounce limit, no more light is gathered
+    if (depth <= 0)
+      return color(0, 0, 0);
+
     if (world.hit(r, interval(0, infinity), rec)) {
       vec3 direction = random_on_hemisphere(rec.normal);
-      return 0.5 * ray_color(ray(rec.p, direction), world);
+      return 0.5 * ray_color(ray(rec.p, direction), depth - 1, world);
     }
 
     vec3 unit_direction = unit_vector(r.direction());
@@ -100,8 +106,7 @@ private:
   }
 
   vec3 pixel_sample_square() const {
-
-    //
+    // Returns a random point in the square surrounding a pixel at the origin
     auto point_x = -0.5 + random_double();
     auto point_y = -0.5 + random_double();
 
@@ -109,6 +114,7 @@ private:
   }
 
   ray get_ray(int i, int j) const {
+    // Get randomy sampled camera ray for the pixel location of i and j
     auto pixel_center = pixel00_loc + (i * pixel_delta_u) + (j * pixel_delta_v);
     auto pixel_sample = pixel_center + pixel_sample_square();
 
