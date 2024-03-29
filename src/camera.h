@@ -14,10 +14,9 @@ class camera {
 public:
   // Note: An image's aspect ratio can be found by the ratio of its height and
   // width (width/height)
-  double aspect_ratio = 1.0;  // Ratio of image width over height
-  int image_width = 100;      // Rendered image width in pixel count
-  int samples_per_pixel = 10; // Count of random samples for each pixel
-  int max_depth = 10;         // Maximum number of ray bounces into scene
+  double aspect_ratio = 1.0; // Ratio of image width over height
+  int image_width = 100;     // Rendered image width in pixel count
+  int samples_per_pixel = 10;
 
   void render(const hittable &world) {
     init();
@@ -97,7 +96,7 @@ private:
 
     if (world.hit(r, interval(0, infinity), rec)) {
       vec3 direction = random_on_hemisphere(rec.normal);
-      return 0.5 * ray_color(ray(rec.p, direction), depth - 1, world);
+      return 0.5 * ray_color(ray(rec.p, direction), world);
     }
 
     vec3 unit_direction = unit_vector(r.direction());
