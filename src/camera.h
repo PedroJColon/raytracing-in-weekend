@@ -17,7 +17,7 @@ public:
   double aspect_ratio = 1.0; // Ratio of image width over height
   int image_width = 100;     // Rendered image width in pixel count
   int samples_per_pixel = 10; // Count of random samples for each pixel
-  int max_depth = 50; // MAxium number of ray bounces into scene
+  int max_depth = 10; // MAxium number of ray bounces into scene
 
   void render(const hittable &world) {
     init();
@@ -95,7 +95,7 @@ private:
     if (depth <= 0)
       return color(0, 0, 0);
 
-    if (world.hit(r, interval(0, infinity), rec)) {
+    if (world.hit(r, interval(0.001, infinity), rec)) {
       vec3 direction = random_on_hemisphere(rec.normal);
       return 0.5 * ray_color(ray(rec.p, direction), depth, world);
     }
