@@ -5,8 +5,7 @@
 
 #include "color.h"
 #include "hittable.h"
-#include "ray.h"
-#include "vec3.h"
+#include "material.h"
 
 #include <iostream>
 
@@ -96,10 +95,12 @@ private:
       return color(0, 0, 0);
 
     if (world.hit(r, interval(0.001, infinity), rec)) {
-       // Generates true lambertian reflection
-      vec3 direction = rec.normal + random_unit_vector();
-      // vec3 direction = random_on_hemisphere(rec.normal);
-      return 0.4 * ray_color(ray(rec.p, direction), depth, world);
+      ray scattered;
+      color attenuation;
+      if (rec.mat->scatter(r, rec, attenuation, scattered)) {
+        return attenuation * ray_color(scattered, depth - 1, world);
+      }
+      return color(0, 0, 0);
     }
 
     vec3 unit_direction = unit_vector(r.direction());

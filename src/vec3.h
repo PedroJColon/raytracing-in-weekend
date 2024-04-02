@@ -42,6 +42,11 @@ public:
     return (point[0] * point[0]) + (point[1] * point[1]) +
            (point[2] * point[2]);
   }
+  bool near_zero() const {
+    // Returns true if the vector is close to zero in all dimensions
+    auto s = 1e-8;
+    return (fabs(point[0]) < s) && (fabs(point[1]) < s) && (fabs(point[2]) < s);
+  }
 
   static vec3 random() {
     return vec3(random_double(), random_double(), random_double());
@@ -119,5 +124,7 @@ inline vec3 random_on_hemisphere(const vec3 &normal) {
     return -on_unit_sphere;
   }
 }
+
+vec3 reflect(const vec3 &v, const vec3 &n) { return v - 2 * dot(v, n) * n; }
 
 #endif
