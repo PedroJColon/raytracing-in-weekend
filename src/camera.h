@@ -99,7 +99,7 @@ private:
        // Generates true lambertian reflection
       vec3 direction = rec.normal + random_unit_vector();
       // vec3 direction = random_on_hemisphere(rec.normal);
-      return 0.5 * ray_color(ray(rec.p, direction), depth, world);
+      return 0.4 * ray_color(ray(rec.p, direction), depth, world);
     }
 
     vec3 unit_direction = unit_vector(r.direction());
