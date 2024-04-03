@@ -2,7 +2,6 @@
 #define COLOR_H
 
 #include "interval.h"
-#include "ray.h"
 #include "vec3.h"
 #include <cmath>
 #include <iostream>
