@@ -7,7 +7,6 @@
 #include "hittable.h"
 #include "material.h"
 
-#include <cmath>
 #include <iostream>
 
 class camera {
@@ -19,6 +18,9 @@ public:
   int samples_per_pixel = 10; // Count of random samples for each pixel
   int max_depth = 10;         // MAxium number of ray bounces into scene
   double vfov = 90; // Vertical view angle (field of view)
+  point3 lookfrom = point3(0,0,-1);
+  point3 lookat = point3(0,0,0);
+  vec3 vup = vec3(0,1,0);
 
   void render(const hittable &world) {
     init();
@@ -42,11 +44,14 @@ public:
   }
 
 private:
-  int image_height;
-  point3 center;
-  point3 pixel00_loc;
-  vec3 pixel_delta_u;
-  vec3 pixel_delta_v;
+  int image_height; // Rendered image height
+  point3 center; // Camera Center
+  point3 pixel00_loc; // Pixel coordinates (0,0)
+  vec3 pixel_delta_u; // Offset to pixel to the right
+  vec3 pixel_delta_v; // Offset to pixel below
+  vec3 u; // Camera frame basis vectors
+  vec3 v; // Camera frame basis vectors
+  vec3 w; // Camera frame basis vectors
 
   void init() {
     // Calculate the image height, and ensure that it's at least 1
@@ -56,10 +61,10 @@ private:
     image_height = static_cast<int>(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;
 
-    center = point3(0, 0, 0);
+    center = lookfrom;
 
     // Camera
-    auto focal_length = 1.0;
+    auto focal_length = (lookfrom - lookat).length();
     auto theta = degrees_to_radians(vfov);
     auto h = tan(theta/2);
     // Viewport widths less than one are okay since they are real valued
@@ -74,10 +79,14 @@ private:
     // Note: Distance between two adjacent pixels is called pixel spacing and
     // the standard is square pixels
 
+    w = unit_vector(lookfrom - lookat);
+    u = unit_vector(cross(vup, w));
+    v = cross(w, u);
+
     // Helps us calcuate the vectors across horizontal axis and down the
     // vertical axis
-    auto viewport_u = vec3(viewport_width, 0, 0);
-    auto viewport_v = vec3(0, -viewport_height, 0);
+    auto viewport_u = viewport_width * u;
+    auto viewport_v = viewport_height * v;
 
     // Helps us calcuate where to put the pixel values by using the delta
     // vectors as our guide This way, our viewport and pixel grid are evenly
@@ -86,8 +95,9 @@ private:
     pixel_delta_v = viewport_v / image_height;
 
     // Calculate the location of the upper left pixel.
-    auto viewport_upper_left =
-        center - vec3(0, 0, focal_length) - viewport_u / 2 - viewport_v / 2;
+    auto viewport_upper_left = center - (focal_length * w) - viewport_u/2 - viewport_v/2;
+    // auto viewport_upper_left =
+    //     center - vec3(0, 0, focal_length) - viewport_u / 2 - viewport_v / 2;
     pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
   }
 
