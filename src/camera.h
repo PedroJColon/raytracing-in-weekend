@@ -7,6 +7,7 @@
 #include "hittable.h"
 #include "material.h"
 
+#include <cmath>
 #include <iostream>
 
 class camera {
@@ -17,6 +18,7 @@ public:
   int image_width = 100;      // Rendered image width in pixel count
   int samples_per_pixel = 10; // Count of random samples for each pixel
   int max_depth = 10;         // MAxium number of ray bounces into scene
+  double vfov = 90; // Vertical view angle (field of view)
 
   void render(const hittable &world) {
     init();
@@ -58,11 +60,13 @@ private:
 
     // Camera
     auto focal_length = 1.0;
+    auto theta = degrees_to_radians(vfov);
+    auto h = tan(theta/2);
     // Viewport widths less than one are okay since they are real valued
     // Viewports are important due to allowing us to setup our 3D world in a way
     // that contains the grid of pixels This ensures that the objects that are
     // bounded to the viewport share the same aspect ratio across the board
-    auto viewport_height = 2.0;
+    auto viewport_height = 2.0 * h * focal_length;
     // Reason we don't use the aspect ratio var is because we need the viewport
     // to match the image porportions
     auto viewport_width =
