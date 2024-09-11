@@ -6,4 +6,4 @@ set(header_dir "${PROJECT_HEADER_DIR}/src/")
 
 file (GLOB header_files "${header_dir}/*.h")
 
-add_executable(raytracing main.cpp ${header_files})
+add_executable(${PROJECT_NAME} main.cpp ${header_files})
