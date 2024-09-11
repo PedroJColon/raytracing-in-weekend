@@ -12,6 +12,13 @@ To build project, follow these steps:
 4. Project files should be built. If you are on windows, a visual studio solution will be built.
 NOTE: Header Files will be loacted in external dependecies
 
+## How to run project
+To run project, follow these steps:
+1. Go to terminal
+2. Go to build folder
+3. Run the following command: ./raytracing.exe
+4. Let the magic happen!
+
 ## What to expect from project?
 - Source Code of the project to show the alogrithims and math done
 - Showcase a render of the spheres specficed in render section
